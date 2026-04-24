@@ -15,7 +15,7 @@ function preload() {
 
 function setup() {
 
-  createCanvas(1556,1080);
+  createCanvas(windowWidth, windowHeight);
 
   userStartAudio();
 
@@ -54,6 +54,7 @@ function setup() {
 
 
   cover.volume(0);
+  cover.hide();
   cover.loop();
 
 
@@ -65,43 +66,45 @@ function setup() {
 
 function draw() {
 
-  background(0);
+  if (cover.width > 0) {
+    drawVideo(cover);
+}
 
   if (state === "cover")
-    image(cover,0,0,width,height);
+    drawVideo(cover);
 
   else if (state === "scene1")
-    image(scene1,0,0,width,height);
+    drawVideo(scene1);
 
   else if (state === "no0_wait")
-    image(no0,0,0,width,height);
+    drawVideo(no0);
 
   else if (state === "scene2")
-    image(scene2,0,0,width,height);
+    drawVideo(scene2);
 
   else if (state === "yes_wait")
-    image(yes,0,0,width,height);
+    drawVideo(yes);
 
   else if (state === "yes1_wait")
-    image(yes1,0,0,width,height);
+    drawVideo(yes);
 
   else if (state === "no_wait")
-    image(no,0,0,width,height);
+    drawVideo(no);
 
   else if (state === "scene3")
-    image(scene3,0,0,width,height);
+    drawVideo(scene3);
 
   else if (state === "scene4")
-    image(scene4,0,0,width,height);
+    drawVideo(scene4);
 
   else if (state === "scene5")
-    image(scene5,0,0,width,height);
+    drawVideo(scene5);
 
   else if (state === "scene6")
-    image(scene6,0,0,width,height);
+    drawVideo(scene6);
 
   else if (state === "scene7")
-    image(scene7,0,0,width,height);
+    drawVideo(scene7);
 
 }
 
@@ -110,22 +113,18 @@ function mousePressed() {
 
   if (!canClick) return;
 
-
   if (!sound.isPlaying()) {
-
     sound.setVolume(0.4);
     sound.loop();
-
   }
-
 
   if (state === "cover") {
 
     if (
-      mouseX > 426 &&
-      mouseX < 1252 &&
-      mouseY > 509 &&
-      mouseY < 626
+      mouseX > width * 0.27 &&
+      mouseX < width * 0.80 &&
+      mouseY > height * 0.47 &&
+      mouseY < height * 0.58
     ) {
 
       cover.stop();
@@ -134,18 +133,16 @@ function mousePressed() {
       scene1.play();
 
       state = "scene1";
-
     }
   }
-
 
   else if (state === "scene1") {
 
     if (
-      mouseX > 389 &&
-      mouseX < 1225 &&
-      mouseY > 354 &&
-      mouseY < 510
+      mouseX > width * 0.25 &&
+      mouseX < width * 0.78 &&
+      mouseY > height * 0.33 &&
+      mouseY < height * 0.47
     ) {
 
       scene1.stop();
@@ -158,10 +155,10 @@ function mousePressed() {
     }
 
     else if (
-      mouseX > 389 &&
-      mouseX < 1225 &&
-      mouseY > 576 &&
-      mouseY < 716
+      mouseX > width * 0.25 &&
+      mouseX < width * 0.78 &&
+      mouseY > height * 0.53 &&
+      mouseY < height * 0.66
     ) {
 
       scene1.stop();
@@ -174,7 +171,6 @@ function mousePressed() {
     }
   }
 
-
   else if (state === "no0_wait") {
 
     no0.stop();
@@ -183,17 +179,15 @@ function mousePressed() {
     scene2.play();
 
     state = "scene2";
-
   }
-
 
   else if (state === "scene2") {
 
     if (
-      mouseX > 389 &&
-      mouseX < 1225 &&
-      mouseY > 354 &&
-      mouseY < 510
+      mouseX > width * 0.25 &&
+      mouseX < width * 0.78 &&
+      mouseY > height * 0.33 &&
+      mouseY < height * 0.47
     ) {
 
       scene2.stop();
@@ -206,10 +200,10 @@ function mousePressed() {
     }
 
     else if (
-      mouseX > 389 &&
-      mouseX < 1225 &&
-      mouseY > 576 &&
-      mouseY < 716
+      mouseX > width * 0.25 &&
+      mouseX < width * 0.78 &&
+      mouseY > height * 0.53 &&
+      mouseY < height * 0.66
     ) {
 
       scene2.stop();
@@ -222,7 +216,6 @@ function mousePressed() {
     }
   }
 
-
   else if (state === "yes_wait") {
 
     canClick = false;
@@ -234,10 +227,8 @@ function mousePressed() {
 
     state = "yes1_wait";
 
-    setTimeout(() => canClick = true,300);
-
+    setTimeout(() => canClick = true, 300);
   }
-
 
   else if (state === "yes1_wait") {
 
@@ -247,9 +238,7 @@ function mousePressed() {
     scene3.play();
 
     state = "scene3";
-
   }
-
 
   else if (state === "no_wait") {
 
@@ -259,9 +248,7 @@ function mousePressed() {
     scene3.play();
 
     state = "scene3";
-
   }
-
 
   else if (state === "scene3") {
 
@@ -271,9 +258,7 @@ function mousePressed() {
     scene4.play();
 
     state = "scene4";
-
   }
-
 
   else if (state === "scene4") {
 
@@ -283,9 +268,7 @@ function mousePressed() {
     scene5.play();
 
     state = "scene5";
-
   }
-
 
   else if (state === "scene5") {
 
@@ -295,9 +278,7 @@ function mousePressed() {
     scene6.play();
 
     state = "scene6";
-
   }
-
 
   else if (state === "scene6") {
 
@@ -307,7 +288,18 @@ function mousePressed() {
     scene7.play();
 
     state = "scene7";
-
   }
+}
 
+function drawVideo(v) {
+
+  let vw = v.width;
+  let vh = v.height;
+
+  let scale = max(width / vw, height / vh);
+
+  let w = vw * scale;
+  let h = vh * scale;
+
+  image(v, (width - w) / 2, (height - h) / 2, w, h);
 }
