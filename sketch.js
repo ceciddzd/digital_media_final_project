@@ -60,15 +60,11 @@ function setup() {
 
   sound.setVolume(0.4);
   sound.loop();
-
+  
 }
 
 
 function draw() {
-
-  if (cover.width > 0) {
-    drawVideo(cover);
-}
 
   if (state === "cover")
     drawVideo(cover);
@@ -86,7 +82,7 @@ function draw() {
     drawVideo(yes);
 
   else if (state === "yes1_wait")
-    drawVideo(yes);
+    drawVideo(yes1);
 
   else if (state === "no_wait")
     drawVideo(no);
@@ -127,7 +123,7 @@ function mousePressed() {
       mouseY < height * 0.58
     ) {
 
-      cover.stop();
+      stopAllVideos();
 
       scene1.time(0);
       scene1.play();
@@ -145,35 +141,32 @@ function mousePressed() {
       mouseY < height * 0.47
     ) {
 
-      scene1.stop();
+      stopAllVideos();
 
       scene2.time(0);
       scene2.play();
 
       state = "scene2";
 
-    }
-
-    else if (
+    } else if (
       mouseX > width * 0.25 &&
       mouseX < width * 0.78 &&
       mouseY > height * 0.53 &&
       mouseY < height * 0.66
     ) {
 
-      scene1.stop();
+      stopAllVideos();
 
       no0.time(0);
       no0.play();
 
       state = "no0_wait";
-
     }
   }
 
   else if (state === "no0_wait") {
 
-    no0.stop();
+    stopAllVideos();
 
     scene2.time(0);
     scene2.play();
@@ -190,29 +183,26 @@ function mousePressed() {
       mouseY < height * 0.47
     ) {
 
-      scene2.stop();
+      stopAllVideos();
 
       yes.time(0);
       yes.play();
 
       state = "yes_wait";
 
-    }
-
-    else if (
+    } else if (
       mouseX > width * 0.25 &&
       mouseX < width * 0.78 &&
       mouseY > height * 0.53 &&
       mouseY < height * 0.66
     ) {
 
-      scene2.stop();
+      stopAllVideos();
 
       no.time(0);
       no.play();
 
       state = "no_wait";
-
     }
   }
 
@@ -220,19 +210,19 @@ function mousePressed() {
 
     canClick = false;
 
-    yes.stop();
+    stopAllVideos();
 
     yes1.time(0);
     yes1.play();
 
     state = "yes1_wait";
 
-    setTimeout(() => canClick = true, 300);
+    setTimeout(() => canClick = true, 800);
   }
 
   else if (state === "yes1_wait") {
 
-    yes1.stop();
+    stopAllVideos();
 
     scene3.time(0);
     scene3.play();
@@ -242,7 +232,7 @@ function mousePressed() {
 
   else if (state === "no_wait") {
 
-    no.stop();
+    stopAllVideos();
 
     scene3.time(0);
     scene3.play();
@@ -252,7 +242,7 @@ function mousePressed() {
 
   else if (state === "scene3") {
 
-    scene3.stop();
+    stopAllVideos();
 
     scene4.time(0);
     scene4.play();
@@ -262,7 +252,7 @@ function mousePressed() {
 
   else if (state === "scene4") {
 
-    scene4.stop();
+    stopAllVideos();
 
     scene5.time(0);
     scene5.play();
@@ -272,7 +262,7 @@ function mousePressed() {
 
   else if (state === "scene5") {
 
-    scene5.stop();
+    stopAllVideos();
 
     scene6.time(0);
     scene6.play();
@@ -282,7 +272,7 @@ function mousePressed() {
 
   else if (state === "scene6") {
 
-    scene6.stop();
+    stopAllVideos();
 
     scene7.time(0);
     scene7.play();
@@ -306,4 +296,18 @@ function drawVideo(v) {
 
 function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
+}
+
+function stopAllVideos() {
+
+  let all = [
+    cover, scene1, no0,
+    scene2, yes, yes1, no,
+    scene3, scene4, scene5, scene6, scene7
+  ];
+
+  for (let v of all) {
+    v.pause();
+    v.currentTime = 0;
+  }
 }
