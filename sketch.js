@@ -303,3 +303,7 @@ function drawVideo(v) {
 
   image(v, (width - w) / 2, (height - h) / 2, w, h);
 }
+
+function windowResized() {
+  resizeCanvas(windowWidth, windowHeight);
+}
